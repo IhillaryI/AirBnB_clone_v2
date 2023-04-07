@@ -31,7 +31,7 @@ fi
 
 sudo chown -R ubuntu:ubuntu /data/
 
-sudo sed -i 's/server_name _\;/server_name _\;\n\n\tlocation \/hbnb_static\/ {\n\t\talias \/data\/web_static\/current\/\;\n\t}\n/g' /etc/nginx/sites-enabled/default
+sudo sed -i 's/server_name _\;/server_name _\;\n\n\tlocation \/hbnb_static\/ {\n\t\talias \/data\/web_static\/current\/\;\n\t\tautoindex off;\n\t}\n/g' /etc/nginx/sites-enabled/default
 
 sudo service nginx restart
 
