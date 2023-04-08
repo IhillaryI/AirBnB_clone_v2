@@ -8,6 +8,7 @@ from fabric.api import local, cd, run, put, env
 env.hosts = ["18.207.207.66", "54.90.27.97"]
 env.user = "ubuntu"
 
+
 def do_deploy(archive_path):
     """Distributes an archive to a web server.
     Args:
