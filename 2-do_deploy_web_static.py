@@ -9,24 +9,14 @@ env.hosts = ["18.207.207.66", "54.90.27.97"]
 env.user = "ubuntu"
 
 
-def do_pack():
-    """Create a tar gzipped archive of the directory web_static."""
-    dt = datetime.utcnow()
-    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
-                                                         dt.month,
-                                                         dt.day,
-                                                         dt.hour,
-                                                         dt.minute,
-                                                         dt.second)
-    if local("mkdir -p versions").failed:
-        return None
-    if local("tar -cvzf {} web_static".format(file)).failed:
-        return None
-    return file
-
-
 def do_deploy(archive_path):
-    """Distributes an archive to web servers."""
+    """Distributes an archive to a web server.
+    Args:
+        archive_path (str): The path of the archive to distribute.
+    Returns:
+        If the file doesn't exist at archive_path or an error occurs - False.
+        Otherwise - True.
+    """
     if not os.path.isfile(archive_path):
         return False
     file_name = os.path.relpath(archive_path).split("/")[1]
