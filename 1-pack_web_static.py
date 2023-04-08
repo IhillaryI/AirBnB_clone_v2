@@ -1,10 +1,17 @@
 #!/usr/bin/python3
+"""This Modules contains a function that uses
+Fabric to create a directory and generates a .tgz file
+"""
+
 from fabric.api import local
 from datetime import datetime
 
 
 def do_pack():
-    """Packing web_static to a .tgz file"""
+    """Packing web_static to a .tgz file.
+    Also creates the versions directory if
+    it doesn't exist
+	"""
 
     today = datetime.today()
     local("mkdir -p versions")
