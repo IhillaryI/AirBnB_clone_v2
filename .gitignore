@@ -1,3 +1,6 @@
 test_params_create
 main_place_amenities.py
 file.json
+__pycache__
+.gitignore
+versions*
