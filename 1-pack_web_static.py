@@ -9,8 +9,11 @@ from datetime import datetime
 
 def do_pack():
     """Create a tar gzipped archive of the directory web_static."""
+
     today = datetime.today()
-    local("mkdir -p versions")
+    result = local("mkdir -p versions")
+    if result.failed:
+        return None
 
     file_string = f"web_static{today.year}{today.month}{today.day}" \
         f"{today.hour}{today.minute}{today.second}"
