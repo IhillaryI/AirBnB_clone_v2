@@ -1,9 +1,8 @@
 #!/usr/bin/python3
-# Fabfile to generates a .tgz archive from the contents of web_static.
+# Fabfile to distribute an archive to a web server.
 import os.path
 from datetime import datetime
 from fabric.api import local, cd, run, put, env
-
 
 env.hosts = ["18.207.207.66", "54.90.27.97"]
 env.user = "ubuntu"
