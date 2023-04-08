@@ -11,7 +11,10 @@ def do_pack():
     """Packing web_static to a .tgz file.
     Also creates the versions directory if
     it doesn't exist
-	"""
+
+    All files in the folder web_static must be added to the final archive.
+    All archives must be stored in the folder versions.
+    """
 
     today = datetime.today()
     local("mkdir -p versions")
