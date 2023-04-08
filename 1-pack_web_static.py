@@ -8,7 +8,7 @@ from datetime import datetime
 
 
 def do_pack():
-    """Create a tar gzipped archive of the directory web_static."""
+"""Create a tar gzipped archive of the directory web_static."""
 
     today = datetime.today()
     result = local("mkdir -p versions")
