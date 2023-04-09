@@ -9,6 +9,14 @@ env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
+    """A fabric script that distributes an archive to a web server.
+
+    Args:
+        archive_path (str): the path to the archive file
+    Returns:
+        False: if commands don't execute successfuly
+        True: on Successful command execution.
+    """
     if not os.path.isfile(archive_path):
         return False
     file_name = os.path.relpath(archive_path).split("/")[1]
