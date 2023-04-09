@@ -9,13 +9,6 @@ env.user = "ubuntu"
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to a web server.
-    Args:
-        archive_path (str): The path of the archive to distribute.
-    Returns:
-        If the file doesn't exist at archive_path or an error occurs - False.
-        Otherwise - True.
-    """
     if not os.path.isfile(archive_path):
         return False
     file_name = os.path.relpath(archive_path).split("/")[1]
