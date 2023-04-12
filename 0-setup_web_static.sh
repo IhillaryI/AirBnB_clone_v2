@@ -34,9 +34,8 @@ printf %s "server {
         return 301 http://cuberule.com/;
     }
     error_page 404 /404.html;
-    location /404 {
-      root /var/www/html;
-      internal;
+    location / {
+		try_files \$uri \$uri/ =404;
     }
 }" | sudo tee /etc/nginx/sites-enabled/default
 
