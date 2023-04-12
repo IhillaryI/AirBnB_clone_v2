@@ -1,44 +1,51 @@
 #!/usr/bin/python3
-# Fabfile to distribute an archive to a web server.
+# Fabfile to generates a .tgz archive from the contents of web_static.
 import os.path
-from fabric.api import env
-from fabric.api import put
-from fabric.api import run
+from datetime import datetime
+from fabric.api import local, run, env
 
-env.hosts = ["54.90.27.97", "18.207.207.66"]
+env.hosts = ["18.207.207.66", "54.90.27.97"]
+
+
+def do_pack():
+    """Create a tar gzipped archive of the directory web_static."""
+    dt = datetime.utcnow()
+    file = "versions/web_static_{}{}{}{}{}{}.tgz".format(dt.year,
+                                                         dt.month,
+                                                         dt.day,
+                                                         dt.hour,
+                                                         dt.minute,
+                                                         dt.second)
+    if local("mkdir -p versions").failed:
+        return None
+    if local("tar -cvzf {} web_static".format(file)).failed:
+        return None
+    return file
 
 
 def do_deploy(archive_path):
-    """Distributes an archive to a web server.
-    Args:
-        archive_path (str): The path of the archive to distribute.
-    Returns:
-        If the file doesn't exist at archive_path or an error occurs - False.
-        Otherwise - True.
-    """
-    if os.path.isfile(archive_path) is False:
+    """Deploys Archive to the provided hosts servers"""
+    if not os.path.isfile(archive_path):
         return False
-    file_string = archive_path.split("/")[-1]
-    file_name = file_string.split(".")[0]
+    archive = archive_path.split("/")[1]
+    file_name = archive.split(".")[0]
 
-    if put(archive_path, "/tmp", use_sudo=True).failed:
+    if put(archive_path, "/tmp").failed:
         return False
-    result = run(f"sudo tar xf /tmp/{file_string} -C"
-                 f" /data/web_static/releases/ --one-top-level")
-    if result.failed:
+    if run(f"sudo tar xf /tmp/{archive} -C /data/web_static/releases/"
+            f" --one-top-level").failed:
         return False
-    if run(f"sudo rm /tmp/{file_string}").failed:
+    if run(f"sudo rm /tmp{archive}").failed:
         return False
     if run(f"sudo rm -rf /data/web_static/current").failed:
         return False
-    result = run(f"sudo ln -s /data/web_static/releases"
-                 f"/{file_name} /data/web_static/current")
-    if result.failed:
+    if run(f"sudo ln -s /data/web_static/releases/{file_name}"
+            f" /data/web_static/current").failed:
         return False
-    result = run(f"sudo cp -r /data/web_static/releases/{file_name}/web_static/*"
-                 f" /data/web_static/releases/{file_name}")
-    if result.failed:
+    if run(f"sudo cp -r /data/web_static/releases/{file_name}/web_static/*"
+            f" /data/web_static/releases/{file_name}").failed:
         return False
-    if run(f"sudo rm -rf /data/web_static/releases/{file_name}/web_static").failed:
+    if run(f"sudo rm -rf"
+            f" /data/web_static/releases/{file_name}/web_static").failed:
         return False
     return True
