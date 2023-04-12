@@ -32,7 +32,7 @@ def do_deploy(archive_path):
 
     if put(archive_path, "/tmp").failed:
         return False
-    if run(f"sudo tar xf /tmp/{archive} -C /data/web_static/release/"
+    if run(f"sudo tar xf /tmp/{archive} -C /data/web_static/releases/"
             f" --one-top-level").failed:
         return False
     if run(f"rm /tmp/{archive}").failed:
