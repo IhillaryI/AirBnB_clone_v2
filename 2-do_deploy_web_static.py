@@ -27,15 +27,13 @@ def do_deploy(archive_path):
         return False
     if run("sudo tar -xf /tmp/{}".format(archive)).failed:
         return False
-    if cd("/tmp").failed:
-        return False
+    cd("/tmp")
     if run("sudo cp -r web_static/*"
             " /data/web_static/releases/{}".format(file)).failed:
         return False
     if run("sudo rm -rf web_static*".format(archive)).failed:
         return False
-    if cd("/data/web_static/").failed:
-        return False
+    cd("/data/web_static/")
     if run("sudo rm -rf current").failed:
         return False
     if run("sudo ln -s releases/{} current".format(file)).failed:
