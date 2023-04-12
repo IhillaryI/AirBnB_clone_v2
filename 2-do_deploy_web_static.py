@@ -23,4 +23,21 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Deploy a tar gzipped archive to remote web servers."""
-    pass
+    if not path.isfile(archive_path):
+        return False
+    archive = archive_path.split("/")[1]
+    file_name = archive.splict(".")[0]
+
+    if put(archive_path, "/tmp").failed:
+        return False
+    if run(f"sudo tar xf /tmp/{archive} -C /data/web_static/release/"
+            f" --one-top-level").failed:
+        return False
+    if run(f"rm /tmp/{archive}").failed:
+        return False
+    if run(f"sudo rm -rf /data/web_static/current").failed:
+        return False
+    if run(f"sudo ln -s /data/web_static/releases/{file_name} "
+            f"/data/web_static/current").failed:
+        return False
+    return True
