@@ -24,7 +24,12 @@ def do_pack():
 
 
 def do_deploy(archive_path):
-    """Deploys Archive to the provided hosts servers"""
+    """Deploys Archive to the provided hosts servers.
+    Args:
+        archive_path (str): path to the archive
+    Returns:
+        bool: True on success, otherwise False.
+    """
     if not os.path.isfile(archive_path):
         return False
     archive = archive_path.split("/")[1]
