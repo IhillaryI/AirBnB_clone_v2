@@ -15,4 +15,26 @@ def do_deploy(archive_path):
         True (bool): If all runs successfully
         False (bool): If it runs poorly
     """
-    pass
+    if not path.isfile(archive_path):
+        return False
+
+    archive = archive_path.split("/")[1]
+    file = archive.split(".")[0]
+
+    if put(archive_path, "/tmp").failed:
+        return False
+    if run("sudo mkdir -p /data/web_static/releases/{}".format(file)).failed:
+        return False
+    if run("sudo tar -xf {}".format(archive)).failed:
+        return False
+    if run("sudo cp -r web_static"
+            " /data/web_static/releases/{}/".format(file)).failed:
+        return False
+    if run("sudo rm -rf {} web_static".format(archive)).failed:
+        return False
+    if run("sudo rm -rf /data/web_static/current").failed:
+        return False
+    if run("sudo ln -s /data/web_static/releases/{}"
+            " /data/web_static/current".format(file)).failed:
+        return False
+    return True
