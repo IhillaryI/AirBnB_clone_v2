@@ -19,3 +19,8 @@ def do_pack():
     if local("tar -cvzf {} web_static".format(file)).failed:
         return None
     return file
+
+
+def do_deploy(archive_path):
+    """Deploy a tar gzipped archive to remote web servers."""
+    pass
