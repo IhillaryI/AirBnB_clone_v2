@@ -23,6 +23,7 @@ def do_pack():
 
 def do_deploy(archive_path):
     """Deploy a tar gzipped archive to remote web servers."""
+
     if not path.isfile(archive_path):
         return False
     archive = archive_path.split("/")[1]
