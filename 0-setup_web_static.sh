@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 # a Bash script that sets up your web servers for the deployment of web_static
+sudo apt-get -y install nginx
+
 if [ ! -d "/data/web_static/releases/test" ];then
 	sudo mkdir -p /data/web_static/releases/test;
     echo "Hello There!" | sudo tee "/data/web_static/releases/test/index.html";
