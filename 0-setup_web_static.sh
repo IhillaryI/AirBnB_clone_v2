@@ -20,23 +20,25 @@ fi
 
 sudo chown -R ubuntu:ubuntu /data/
 
-printf '%s\n' "server {
+printf %s "server {
     listen 80 default_server;
     listen [::]:80 default_server;
-
-    server_name localhost;
-
-    root /usr/share/nginx/html;
-    index index.html index.htm;
-
+    add_header X-Served-By $HOSTNAME;
+    root   /var/www/html;
+    index  index.html index.htm;
     location /hbnb_static {
-        alias /data/web_static/current/index.html;
+        alias /data/web_static/current;
+        index index.html index.htm;
     }
-
+    location /redirect_me {
+        return 301 http://cuberule.com/;
+    }
+    error_page 404 /404.html;
     location / {
-        try_files \$uri \$uri/ =404;
+		try_files \$uri \$uri/ =404;
     }
 }" | sudo tee /etc/nginx/sites-enabled/default
+
 
 sudo service nginx restart
 
