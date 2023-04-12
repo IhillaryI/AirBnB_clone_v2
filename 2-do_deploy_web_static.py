@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 from os import path
-from fabric.api import local, run, env, put
+from fabric.api import local, run, env, put, cd
 
 env.hosts = ["54.90.27.97", "18.207.207.66"]
 
@@ -27,14 +27,17 @@ def do_deploy(archive_path):
         return False
     if run("sudo tar -xf /tmp/{}".format(archive)).failed:
         return False
-    if run("sudo cp -r /tmp/web_static/*"
+    if cd("/tmp").failed:
+        return False
+    if run("sudo cp -r web_static/*"
             " /data/web_static/releases/{}".format(file)).failed:
         return False
-    if run("sudo rm -rf {} /tmp/web_static*".format(archive)).failed:
+    if run("sudo rm -rf web_static*".format(archive)).failed:
         return False
-    if run("sudo rm -rf /data/web_static/current").failed:
+    if cd("/data/web_static/").failed:
         return False
-    if run("sudo ln -s /data/web_static/releases/{}"
-            " /data/web_static/current".format(file)).failed:
+    if run("sudo rm -rf current").failed:
+        return False
+    if run("sudo ln -s releases/{} current".format(file)).failed:
         return False
     return True
