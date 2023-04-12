@@ -1,25 +1,12 @@
 #!/usr/bin/env bash
 # a Bash script that sets up your web servers for the deployment of web_static
-
-if [ ! -d "/data/" ];then
-    sudo mkdir /data/;
-fi
-
-if [ ! -d "/data/web_static/" ];then
-    sudo mkdir /data/web_static/;
-fi
-
-if [ ! -d "/data/web_static/releases/" ];then
-	sudo mkdir /data/web_static/releases/;
+if [ ! -d "/data/web_static/releases/test" ];then
+	sudo mkdir -p /data/web_static/releases/test;
+    echo "Hello There!" | sudo tee "/data/web_static/releases/test/index.html";
 fi
 
 if [ ! -d "/data/web_static/shared/" ];then
 	sudo mkdir /data/web_static/shared/;
-fi
-
-if [ ! -d "/data/web_static/releases/test/" ];then
-	sudo mkdir "/data/web_static/releases/test/";
-	echo "Hello There!" | sudo tee "/data/web_static/releases/test/index.html";
 fi
 
 if [ -h "/data/web_static/current" ];then
@@ -31,7 +18,23 @@ fi
 
 sudo chown -R ubuntu:ubuntu /data/
 
-sudo sed -i 's/server_name localhost\;/server_name localhost\;\n\n\tlocation \/hbnb_static {\n\t\talias \/data\/web_static\/current\;\n\t\tindex index.html index.htm;\n\t}\n/g' /etc/nginx/sites-enabled/default
+printf '%s\n' 'server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name localhost;
+
+    root /usr/share/nginx/html;
+    index index.html index.htm;
+
+    location /hbnb_static {
+        alias /data/web_static/current/index.html;
+    }
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}' | sudo tee /etc/nginx/sites-enabled/default
 
 sudo service nginx restart
 
