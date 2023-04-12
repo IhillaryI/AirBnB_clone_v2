@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Modules sets up the deployment of a web_static archive."""
 # Fabfile to generates a .tgz archive from the contents of web_static.
 import os.path
 from datetime import datetime
