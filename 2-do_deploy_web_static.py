@@ -40,4 +40,10 @@ def do_deploy(archive_path):
     if run(f"sudo ln -s /data/web_static/releases/{file_name} "
             f"/data/web_static/current").failed:
         return False
+    if run(f"sudo cp -r /data/web_static/releases/{file_name}/web_static/*"
+            f" /data/web_static/releases/{file_name}").failed:
+        return False
+    if run(f"sudo rm -rf "
+            f"/data/web_static/releases/{file_name}/web_static").failed:
+        return False
     return True
