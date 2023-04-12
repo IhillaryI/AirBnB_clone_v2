@@ -20,7 +20,7 @@ fi
 
 sudo chown -R ubuntu:ubuntu /data/
 
-printf '%s\n' 'server {
+printf '%s\n' "server {
     listen 80 default_server;
     listen [::]:80 default_server;
 
@@ -34,9 +34,9 @@ printf '%s\n' 'server {
     }
 
     location / {
-        try_files $uri $uri/ =404;
+        try_files \$uri \$uri/ =404;
     }
-}' | sudo tee /etc/nginx/sites-enabled/default
+}" | sudo tee /etc/nginx/sites-enabled/default
 
 sudo service nginx restart
 
