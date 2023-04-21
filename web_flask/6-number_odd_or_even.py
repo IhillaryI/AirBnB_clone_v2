@@ -40,13 +40,13 @@ def number(n):
 
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
-    """populates a html template file"""
+    """Populates and returns a html template file"""
     return render_template('5-number.html', value=n)
 
 
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
 def odd_or_even(n):
-    """populates a html template file"""
+    """Populates and returns a html template file."""
     return render_template('6-number_odd_or_even.html', value=n)
 
 
