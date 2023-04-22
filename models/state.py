@@ -14,9 +14,10 @@ class State(BaseModel, Base):
 
     if os.getenv('HBNB_TYPE_STORAGE') == 'db':
         name = Column(String(128), nullable=False)
-        cites = relationship('City', back_populates="states")
+        cities = relationship('City', back_populates="states")
     else:
         name = ''
+
         @property
         def cities(self):
             """gets all cities related to this state"""

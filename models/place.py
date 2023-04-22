@@ -24,8 +24,8 @@ class Place(BaseModel, Base):
 
         users = relationship('User', back_populates="places")
         cities = relationship('City', back_populates='places')
-        reviews = relationship('Review', back_populates='places', cascade='all,
-        delete')
+        reviews = relationship('Review', back_populates='places',
+                               cascade='all, delete')
     else:
         city_id = ''
         user_id = ''

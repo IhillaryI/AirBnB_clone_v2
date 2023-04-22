@@ -41,13 +41,13 @@ class DBStorage:
         HBNB_MYSQL_PWD = os.environ['HBNB_MYSQL_PWD']
         HBNB_MYSQL_HOST = os.environ['HBNB_MYSQL_HOST']
         HBNB_MYSQL_DB = os.environ['HBNB_MYSQL_DB']
-        self.__engine = create_engine("mysql+mysqldb://"
-                                      "{}".format(quote_plus(HBNB_MYSQL_USER))
-                                      ":{}".format(quote_plus(HBNB_MYSQL_PWD))
-                                      "@{}".format(quote_plus(HBNB_MYSQL_HOST))
-                                      ":3306/{}".format(
-                                                    quote_plus(HBNB_MYSQL_DB)),
-                                      pool_pre_ping=True)
+        self.__engine = create_engine(
+                    "mysql+mysqldb://{}:{}@{}:3306/{}".format(
+                                                HBNB_MYSQL_USER,
+                                                HBNB_MYSQL_PWD,
+                                                HBNB_MYSQL_HOST,
+                                                HBNB_MYSQL_DB),
+                    pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
 
@@ -64,8 +64,9 @@ class DBStorage:
             allCity = self.__session.query(City).all()
             for obj in allState, allCity:
                 for sub_obj in obj:
-                    dict_obj.update({"{}".format(sub_obj.__class__.__name__)
-                                     ".{}".format(sub_obj.id): sub_obj})
+                    dict_obj.update({"{}.{}".format(
+                            sub_obj.__class__.__name__,
+                            sub_obj.id): sub_obj})
         return dict_obj
 
     def new(self, obj):
