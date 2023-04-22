@@ -4,3 +4,4 @@ file.json
 __pycache__
 .gitignore
 versions*
+main.py
