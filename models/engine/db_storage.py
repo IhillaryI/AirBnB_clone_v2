@@ -59,11 +59,12 @@ class DBStorage:
         HBNB_MYSQL_PWD = os.environ['HBNB_MYSQL_PWD']
         HBNB_MYSQL_HOST = os.environ['HBNB_MYSQL_HOST']
         HBNB_MYSQL_DB = os.environ['HBNB_MYSQL_DB']
-        self.__engine = create_engine(f"mysql+mysqldb://"
-                                      f"{quote_plus(HBNB_MYSQL_USER)}"
-                                      f":{quote_plus(HBNB_MYSQL_PWD)}"
-                                      f"@{quote_plus(HBNB_MYSQL_HOST)}"
-                                      f":3306/{quote_plus(HBNB_MYSQL_DB)}",
+        self.__engine = create_engine("mysql+mysqldb://"
+                                      "{}".format(quote_plus(HBNB_MYSQL_USER))
+                                      ":{}".format(quote_plus(HBNB_MYSQL_PWD))
+                                      "@{}".format(quote_plus(HBNB_MYSQL_HOST))
+                                      ":3306/{}".format(
+                                                    quote_plus(HBNB_MYSQL_DB)),
                                       pool_pre_ping=True)
         if os.getenv('HBNB_ENV') == 'test':
             Base.metadata.drop_all(self.__engine)
@@ -74,14 +75,15 @@ class DBStorage:
         if cls is not None:
             all_cls = self.__session.query(cls).all()
             for obj in all_cls:
-                dict_obj.update({f"{obj.__class__.__name__}.{obj.id}": obj})
+                dict_obj.update(
+                    {"{}.{}".format(obj.__class__.__name__, obj.id): obj})
         else:
             allState = self.__session.query(State).all()
             allCity = self.__session.query(City).all()
             for obj in allState, allCity:
                 for sub_obj in obj:
-                    dict_obj.update({f"{sub_obj.__class__.__name__}"
-                                     f".{sub_obj.id}": sub_obj})
+                    dict_obj.update({"{}".format(sub_obj.__class__.__name__)
+                                     ".{}".format(sub_obj.id): sub_obj})
         return dict_obj
 
     def new(self, obj):
