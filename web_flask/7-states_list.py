@@ -7,7 +7,7 @@ from flask import Flask, render_template
 
 
 app = Flask(__name__)
-states = storage.all(State)
+states = list(storage.all(State).values())
 
 @app.route('/states_list', strict_slashes=False)
 def odd_or_even():
