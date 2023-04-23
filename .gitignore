@@ -5,3 +5,4 @@ __pycache__
 .gitignore
 versions*
 main.py
+7-states*
