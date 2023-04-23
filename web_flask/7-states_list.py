@@ -7,20 +7,19 @@ from flask import Flask, render_template
 
 
 app = Flask(__name__)
-
+states = storage.all(State)
 
 @app.route('/states_list', strict_slashes=False)
-def odd_or_even(n):
+def odd_or_even():
     """populates a html template with a list of states"""
-    states = storage.all(State).values()
-    states.sort(key=lambda n: n.name)
-    return render_templates('7-states_list.html', states=states)
+    print(states)
+    return render_template('7-states_list.html', states=states)
 
 
-@app.teardown_appcontext
-def close():
-    """remove the SQLAlchemy session after requests"""
-    storage.close()
+#@app.teardown_appcontext
+#def close():
+ #   """remove the SQLAlchemy session after requests"""
+  #  storage.close()
 
 
 if __name__ == '__main__':
