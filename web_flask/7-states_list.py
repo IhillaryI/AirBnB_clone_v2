@@ -8,10 +8,11 @@ from flask import Flask, render_template
 
 app = Flask(__name__)
 states = list(storage.all(State).values())
+print(states)
 
 
 @app.route('/states_list', strict_slashes=False)
-def odd_or_even():
+def states_list():
     """populates a html template with a list of states"""
     return render_template('7-states_list.html', states=states)
 
