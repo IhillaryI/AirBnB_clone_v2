@@ -25,7 +25,6 @@ def c_text(text):
     return 'C {}'.format(text.replace('_', ' '))
 
 
-@app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def python_text(text="is cool"):
     """prints the text variable on this route"""
@@ -41,7 +40,7 @@ def number(n):
 @app.route('/number_template/<int:n>', strict_slashes=False)
 def number_template(n):
     """Populates and returns a html template file"""
-    return render_template('5-number.html', value=n)
+    return render_template('6-number_odd_or_even.html', value=n)
 
 
 @app.route('/number_odd_or_even/<int:n>', strict_slashes=False)
