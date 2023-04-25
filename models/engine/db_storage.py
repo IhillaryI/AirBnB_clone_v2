@@ -1,4 +1,4 @@
-#!usr/bin/python3
+#!/usr/bin/python3
 from sqlalchemy import create_engine, Table, Column, ForeignKey
 from sqlalchemy.orm import relationship
 from models.state import State
