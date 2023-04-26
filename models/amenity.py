@@ -2,9 +2,12 @@
 """ State Module for HBNB project """
 import os
 from models.base_model import BaseModel, Base
-from models.place import place_amenity
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
+
+
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    from models.place import place_amenity
 
 
 class Amenity(BaseModel, Base):
