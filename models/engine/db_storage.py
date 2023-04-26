@@ -13,20 +13,8 @@ from urllib.parse import quote_plus
 from models.base_model import Base
 
 
-# Define relationships
-place_amenity = Table('place_amenity', Base.metadata,
-                      Column('place_id',
-                             ForeignKey('places.id'), primary_key=True),
-                      Column('amenity_id',
-                             ForeignKey('amenities.id'), primary_key=True))
-Place.amenities = relationship("Amenity",
-                               secondary=place_amenity,
-                               back_populates="place_amenities",
-                               viewonly=False)
-Amenity.place_amenities = relationship("Place",
-                                       secondary=place_amenity,
-                                       back_populates="amenities",
-                                       viewonly=False)
+if os.getenv('HBNB_TYPE_STORAGE') == 'db':
+    from models.place import place_amenity
 
 
 class DBStorage:
